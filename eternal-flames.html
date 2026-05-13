@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eternal Flames - Spicy Couple Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a0033, #330033); color: white; text-align: center; margin: 0; padding: 20px; }
+    h1 { color: #ff3366; }
+    .board { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+    .space { width: 60px; height: 60px; background: #330066; border: 2px solid #ff66aa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .active { background: #ff3366; transform: scale(1.1); box-shadow: 0 0 15px #ff66aa; }
+    button { padding: 15px 30px; margin: 10px; font-size: 18px; background: #ff3366; color: white; border: none; border-radius: 50px; cursor: pointer; }
+    button:hover { background: #ff6699; }
+    #challenge { margin: 30px auto; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 600px; min-height: 120px; }
+    .theme-btn { background: #6600cc; }
+</style>
+</head>
+<body>
+    <h1>🔥 Eternal Flames 🔥</h1>
+    <p>Progress: <span id="progress">0</span>/20 | Level: <span id="level">Tease</span></p>
+
+    <div class="board" id="board"></div>
+
+    <button onclick="rollDice()">🎲 Roll Dice (1-6)</button>
+    <button onclick="spinWheel()" class="theme-btn">🎰 Spin Wheel</button>
+    <button onclick="newDilemma()">❓ Spicy Dilemma</button>
+    <button onclick="sensoryRound()">🖤 Sensory Challenge</button>
+
+    <div id="challenge">Click a button to start...</div>
+
+    <button onclick="nextLevel()">Unlock Next Level</button>
+    <button onclick="changeTheme()">Change Theme</button>
+
+<script>
+// Game Data
+let progress = 0;
+const maxProgress = 20;
+const themes = ["Fantasy (Maid/Boss)", "Doctor/Patient", "Sci-Fi Alien", "Strangers in Bar", "Teacher/Student"];
+let currentTheme = themes[0];
+
+const challenges = {
+    tease: ["Kiss neck for 30 seconds", "Strip one clothing item seductively", "Whisper your dirtiest thought", "Massage shoulders for 1 min"],
+    hot: ["Give oral for 60 seconds", "69 position for 1 min", "Spank 10 times", "Use ice cube on body"],
+    explicit: ["Ride in cowgirl for 2 min", "Doggy style teasing", "Blindfold + touch anywhere", "Try new position from unlocked list"]
+};
+
+function createBoard() {
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+    for(let i = 0; i <= maxProgress; i++) {
+        const space = document.createElement('div');
+        space.className = 'space';
+        space.textContent = i;
+        if(i === progress) space.classList.add('active');
+        board.appendChild(space);
+    }
+}
+
+function rollDice() {
+    const roll = Math.floor(Math.random() * 6) + 1;
+    progress = Math.min(progress + roll, maxProgress);
+    document.getElementById('progress').textContent = progress;
+    createBoard();
+    
+    const chal = getRandomChallenge();
+    document.getElementById('challenge').innerHTML = `<h2>You rolled ${roll}!</h2><p>${chal}</p>`;
+}
+
+function getRandomChallenge() {
+    const level = progress < 7 ? 'tease' : progress < 14 ? 'hot' : 'explicit';
+    document.getElementById('level').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+    const list = challenges[level];
+    return list[Math.floor(Math.random() * list.length)] + ` (${currentTheme})`;
+}
+
+function spinWheel() {
+    const rewards = ["Remove 2 clothing items", "Winner chooses position", "5 min foreplay of winner's choice", "Unlock new scene", "Blindfold round"];
+    const reward = rewards[Math.floor(Math.random() * rewards.length)];
+    document.getElementById('challenge').innerHTML = `<h2>Wheel of Lust spun!</h2><p>${reward}</p>`;
+    progress = Math.min(progress + 2, maxProgress);
+    createBoard();
+}
+
+function newDilemma() {
+    const dilemmas = [
+        "Would you rather give oral for 10 min or receive for 5 min?",
+        "Would you rather be tied up or tie me up?",
+        "Would you rather do it with lights on or in complete darkness?"
+    ];
+    const q = dilemmas[Math.floor(Math.random() * dilemmas.length)];
+    document.getElementById('challenge').innerHTML = `<h2>Spicy Dilemma</h2><p>${q}</p><p>Loser performs winner's choice dare.</p>`;
+}
+
+function sensoryRound() {
+    document.getElementById('challenge').innerHTML = `<h2>🖤 Sensory Round</h2>
+    <p>One partner is blindfolded for 3 minutes.<br>
+    The other uses: fingers, tongue, ice, feathers, breath...</p>
+    <p>Focus on teasing erogenous zones.</p>`;
+}
+
+function nextLevel() {
+    alert("New positions/scenes unlocked! (Add your own list here)");
+    progress = Math.min(progress + 3, maxProgress);
+    createBoard();
+}
+
+function changeTheme() {
+    currentTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
+    alert("Theme changed to: " + currentTheme);
+}
+
+// Initialize
+createBoard();
+</script>
+</body>
+</html>
