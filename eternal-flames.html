@@ -7,42 +7,63 @@
 <style>
     body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a0033, #330033); color: white; text-align: center; margin: 0; padding: 20px; }
     h1 { color: #ff3366; }
-    .board { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
-    .space { width: 60px; height: 60px; background: #330066; border: 2px solid #ff66aa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-    .active { background: #ff3366; transform: scale(1.1); box-shadow: 0 0 15px #ff66aa; }
-    button { padding: 15px 30px; margin: 10px; font-size: 18px; background: #ff3366; color: white; border: none; border-radius: 50px; cursor: pointer; }
+    .board { display: flex; justify-content: center; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+    .space { width: 55px; height: 55px; background: #330066; border: 2px solid #ff66aa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .active { background: #ff3366; transform: scale(1.1); box-shadow: 0 0 20px #ff66aa; }
+    button { padding: 14px 28px; margin: 8px; font-size: 17px; background: #ff3366; color: white; border: none; border-radius: 50px; cursor: pointer; }
     button:hover { background: #ff6699; }
-    #challenge { margin: 30px auto; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 600px; min-height: 120px; }
     .theme-btn { background: #6600cc; }
+    #challenge { margin: 25px auto; padding: 25px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 620px; min-height: 140px; }
+    #unlocked { margin-top: 30px; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .unlock-item { background: rgba(255,51,102,0.2); padding: 12px; margin: 8px; border-radius: 12px; border-left: 4px solid #ff3366; }
 </style>
 </head>
 <body>
     <h1>🔥 Eternal Flames 🔥</h1>
-    <p>Progress: <span id="progress">0</span>/20 | Level: <span id="level">Tease</span></p>
+    <p>Progress: <span id="progress">0</span>/25 | Level: <span id="level">Tease</span></p>
 
     <div class="board" id="board"></div>
 
-    <button onclick="rollDice()">🎲 Roll Dice (1-6)</button>
+    <button onclick="rollDice()">🎲 Roll Dice</button>
     <button onclick="spinWheel()" class="theme-btn">🎰 Spin Wheel</button>
     <button onclick="newDilemma()">❓ Spicy Dilemma</button>
-    <button onclick="sensoryRound()">🖤 Sensory Challenge</button>
+    <button onclick="sensoryRound()">🖤 Sensory Round</button>
+    <button onclick="unlockNextLevel()" style="background:#00cc66;">🔓 Unlock Next Level</button>
 
-    <div id="challenge">Click a button to start...</div>
+    <div id="challenge">Click any button to begin your adventure...</div>
 
-    <button onclick="nextLevel()">Unlock Next Level</button>
     <button onclick="changeTheme()">Change Theme</button>
 
+    <h2 style="margin-top:40px;">🗝️ Unlocked Scenes & Positions</h2>
+    <div id="unlocked"></div>
+
 <script>
-// Game Data
+// Game Variables
 let progress = 0;
-const maxProgress = 20;
-const themes = ["Fantasy (Maid/Boss)", "Doctor/Patient", "Sci-Fi Alien", "Strangers in Bar", "Teacher/Student"];
+const maxProgress = 25;
+const themes = ["Fantasy Maid/Boss", "Doctor/Patient", "Sci-Fi Alien", "Strangers at Bar", "Teacher/Student"];
 let currentTheme = themes[0];
 
-const challenges = {
-    tease: ["Kiss neck for 30 seconds", "Strip one clothing item seductively", "Whisper your dirtiest thought", "Massage shoulders for 1 min"],
-    hot: ["Give oral for 60 seconds", "69 position for 1 min", "Spank 10 times", "Use ice cube on body"],
-    explicit: ["Ride in cowgirl for 2 min", "Doggy style teasing", "Blindfold + touch anywhere", "Try new position from unlocked list"]
+let unlockedItems = [];
+
+// Level thresholds
+const levels = [
+    {name: "Tease", min: 0},
+    {name: "Arousal", min: 6},
+    {name: "Passion", min: 12},
+    {name: "Ecstasy", min: 18},
+    {name: "Pure Lust", min: 23}
+];
+
+const unlockables = {
+    5:  {title: "Maid's Obedience", desc: "One partner acts as seductive maid. Must obey 3 commands."},
+    8:  {title: "Doctor's Examination", desc: "Full body 'medical' check with hands and mouth."},
+    11: {title: "Missionary Tease", desc: "Slow missionary with eye contact + dirty talk only."},
+    14: {title: "Cowgirl Control", desc: "Receiver controls pace while giver's hands are pinned."},
+    17: {title: "Doggy Command", desc: "Spanking + hair pulling allowed (light)."},
+    20: {title: "Blindfold + Ice", desc: "Blindfolded partner gets 4 minutes of ice & tongue teasing."},
+    23: {title: "69 Overload", desc: "Mutual oral in 69 position for as long as you can last."},
+    25: {title: "Fantasy Roleplay Night", desc: "Full scene with chosen theme + any unlocked positions."}
 };
 
 function createBoard() {
@@ -57,61 +78,112 @@ function createBoard() {
     }
 }
 
+function getCurrentLevel() {
+    for(let i = levels.length-1; i >= 0; i--) {
+        if(progress >= levels[i].min) return levels[i].name;
+    }
+    return "Tease";
+}
+
 function rollDice() {
     const roll = Math.floor(Math.random() * 6) + 1;
     progress = Math.min(progress + roll, maxProgress);
-    document.getElementById('progress').textContent = progress;
-    createBoard();
+    updateUI();
     
     const chal = getRandomChallenge();
-    document.getElementById('challenge').innerHTML = `<h2>You rolled ${roll}!</h2><p>${chal}</p>`;
-}
-
-function getRandomChallenge() {
-    const level = progress < 7 ? 'tease' : progress < 14 ? 'hot' : 'explicit';
-    document.getElementById('level').textContent = level.charAt(0).toUpperCase() + level.slice(1);
-    const list = challenges[level];
-    return list[Math.floor(Math.random() * list.length)] + ` (${currentTheme})`;
+    document.getElementById('challenge').innerHTML = `<h2>🎲 You rolled ${roll}!</h2><p><strong>${chal}</strong></p>`;
 }
 
 function spinWheel() {
-    const rewards = ["Remove 2 clothing items", "Winner chooses position", "5 min foreplay of winner's choice", "Unlock new scene", "Blindfold round"];
+    const rewards = ["Remove 2 clothing items", "5 min foreplay (winner chooses)", "Winner picks next position", "Blindfold next round", "Extra 3 progress"];
     const reward = rewards[Math.floor(Math.random() * rewards.length)];
-    document.getElementById('challenge').innerHTML = `<h2>Wheel of Lust spun!</h2><p>${reward}</p>`;
-    progress = Math.min(progress + 2, maxProgress);
-    createBoard();
+    progress = Math.min(progress + 3, maxProgress);
+    updateUI();
+    document.getElementById('challenge').innerHTML = `<h2>🎰 Wheel of Lust!</h2><p><strong>${reward}</strong></p>`;
+}
+
+function unlockNextLevel() {
+    progress = Math.min(progress + 4, maxProgress);
+    updateUI();
+    
+    // Check for new unlocks
+    let newUnlock = false;
+    Object.keys(unlockables).forEach(key => {
+        if(progress >= parseInt(key) && !unlockedItems.some(item => item.title === unlockables[key].title)) {
+            unlockedItems.push(unlockables[key]);
+            newUnlock = true;
+            
+            document.getElementById('challenge').innerHTML = `
+                <h2 style="color:#00ffaa">🔓 NEW UNLOCK!</h2>
+                <h3>${unlockables[key].title}</h3>
+                <p>${unlockables[key].desc}</p>
+                <p>Theme: ${currentTheme}</p>`;
+        }
+    });
+    
+    if(!newUnlock) {
+        document.getElementById('challenge').innerHTML = `<h2>Progress Made!</h2><p>Keep going... more unlocks await 🔥</p>`;
+    }
+    
+    renderUnlocked();
+}
+
+function renderUnlocked() {
+    const container = document.getElementById('unlocked');
+    container.innerHTML = '';
+    unlockedItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'unlock-item';
+        div.innerHTML = `<strong>${item.title}</strong><br>${item.desc}`;
+        container.appendChild(div);
+    });
+}
+
+function getRandomChallenge() {
+    const level = getCurrentLevel();
+    document.getElementById('level').textContent = level;
+    
+    const baseChallenges = [
+        "Kiss and lick their neck for 45 seconds",
+        "Strip one item very slowly while maintaining eye contact",
+        "Give a sensual massage for 90 seconds",
+        "Whisper 3 things you want to do to them",
+        "Suck on fingers/toes for 30 seconds"
+    ];
+    return baseChallenges[Math.floor(Math.random() * baseChallenges.length)] + ` (${currentTheme})`;
 }
 
 function newDilemma() {
     const dilemmas = [
-        "Would you rather give oral for 10 min or receive for 5 min?",
-        "Would you rather be tied up or tie me up?",
-        "Would you rather do it with lights on or in complete darkness?"
+        "Would you rather be teased for 10 minutes or teased for 5 minutes with ice?",
+        "Would you rather dominate me this round or submit completely?",
+        "Would you rather do it in front of a mirror or with blindfold on?"
     ];
     const q = dilemmas[Math.floor(Math.random() * dilemmas.length)];
-    document.getElementById('challenge').innerHTML = `<h2>Spicy Dilemma</h2><p>${q}</p><p>Loser performs winner's choice dare.</p>`;
+    document.getElementById('challenge').innerHTML = `<h2>❓ Spicy Dilemma</h2><p>${q}</p><p><strong>Loser does winner's choice.</strong></p>`;
 }
 
 function sensoryRound() {
-    document.getElementById('challenge').innerHTML = `<h2>🖤 Sensory Round</h2>
-    <p>One partner is blindfolded for 3 minutes.<br>
-    The other uses: fingers, tongue, ice, feathers, breath...</p>
-    <p>Focus on teasing erogenous zones.</p>`;
-}
-
-function nextLevel() {
-    alert("New positions/scenes unlocked! (Add your own list here)");
-    progress = Math.min(progress + 3, maxProgress);
-    createBoard();
+    document.getElementById('challenge').innerHTML = `<h2>🖤 Sensory Challenge</h2>
+    <p>Blindfold your partner for 3-5 minutes.<br>
+    Use: fingers, tongue, breath, ice, feathers, or soft fabric.<br>
+    Tease slowly — no rushing allowed.</p>`;
 }
 
 function changeTheme() {
     currentTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
-    alert("Theme changed to: " + currentTheme);
+    alert("🌟 Theme changed to: " + currentTheme);
 }
 
 // Initialize
 createBoard();
+renderUnlocked();
+updateUI = () => {
+    document.getElementById('progress').textContent = progress;
+    createBoard();
+    document.getElementById('level').textContent = getCurrentLevel();
+};
+updateUI();
 </script>
 </body>
 </html>
