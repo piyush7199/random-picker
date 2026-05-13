@@ -10,10 +10,10 @@
     button { padding: 15px 30px; margin: 8px; font-size: 17px; background: #ff3366; color: white; border: none; border-radius: 50px; cursor: pointer; }
     button:hover { background: #ff6699; }
     .small-btn { padding: 10px 20px; font-size: 15px; }
-    #challenge { margin: 25px auto; padding: 25px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 680px; min-height: 200px; }
+    #challenge { margin: 25px auto; padding: 25px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 680px; min-height: 220px; }
     .score { font-size: 22px; margin: 15px 0; }
     .clothes { background: rgba(255,100,150,0.2); padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 500px; }
-    .timer { font-size: 28px; font-weight: bold; color: #ffcc33; margin: 15px 0; }
+    .timer { font-size: 32px; font-weight: bold; color: #ffcc33; margin: 15px 0; }
 </style>
 </head>
 <body>
@@ -96,7 +96,7 @@ function randomChallenge(level) {
     document.getElementById('challenge').innerHTML = `
         <h2>${levelText} Challenge</h2>
         <p><strong>${challenge}</strong></p>
-        <p class="timer" id="timer">00:00</p>
+        <p class="timer" id="timer">Ready</p>
         <button class="small-btn" onclick="startTimer(60)">1 Min</button>
         <button class="small-btn" onclick="startTimer(120)">2 Min</button>
         <button class="small-btn" onclick="startTimer(180)">3 Min</button>
@@ -110,16 +110,19 @@ function startTimer(seconds) {
     clearInterval(timerInterval);
     
     const timerEl = document.getElementById('timer');
+    if (!timerEl) return;   // Safety fix
+    
     timerInterval = setInterval(() => {
         const min = Math.floor(timeLeft / 60);
         const sec = timeLeft % 60;
         timerEl.textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
-        timeLeft--;
         
-        if (timeLeft < 0) {
+        if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            timerEl.textContent = "Time's Up! 🔥";
+            timerEl.textContent = "⏰ Time's Up! 🔥";
+            timerEl.style.color = "#ff3366";
         }
+        timeLeft--;
     }, 1000);
 }
 
@@ -140,15 +143,17 @@ function newDilemma() {
     document.getElementById('challenge').innerHTML = `
         <h2>❓ Spicy Dilemma</h2>
         <p><strong>${q}</strong></p>
-        <p>Discuss and choose together, then do it 🔥</p>
+        <p>Discuss and choose together, then enjoy 🔥</p>
     `;
 }
 
+// ============== SENSORY ROUND ==============
 function sensoryRound() {
     document.getElementById('challenge').innerHTML = `
         <h2>🖤 Sensory Round</h2>
         <p><strong>Blindfold your partner for 3–5 minutes.</strong></p>
-        <p>Use fingers, tongue, ice, breath, or soft touch.<br>Tease them slowly until they beg.</p>
+        <p>Use fingers, tongue, ice, breath, or soft fabric to tease them slowly.</p>
+        <p class="timer" id="timer">Ready</p>
         <button class="small-btn" onclick="startTimer(180)">Start 3 Min Timer</button>
         <button class="small-btn" onclick="startTimer(300)">Start 5 Min Timer</button>
     `;
@@ -163,7 +168,7 @@ function removeClothes(person) {
     updateUI();
     
     if (clothesYou === 0 && clothesPartner === 0) {
-        alert("🎉 Both fully naked! Time for Wild mode 🔥");
+        alert("🎉 Both completely naked! Time for Wild Challenges 🔥");
     }
 }
 
