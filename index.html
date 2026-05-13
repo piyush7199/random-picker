@@ -2,88 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Eternal Flames - Our Spicy Game</title>
+<title>Eternal Flames - Our Spicy Game ❤️‍🔥</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a0033, #330033); color: white; text-align: center; margin: 0; padding: 20px; }
-    h1 { color: #ff3366; }
-    button { padding: 15px 30px; margin: 8px; font-size: 17px; background: #ff3366; color: white; border: none; border-radius: 50px; cursor: pointer; }
-    button:hover { background: #ff6699; }
+    body { 
+        font-family: 'Segoe UI', sans-serif; 
+        background: linear-gradient(135deg, #1a0033, #330033); 
+        color: white; 
+        text-align: center; 
+        margin: 0; 
+        padding: 20px; 
+    }
+    h1 { color: #ff3366; text-shadow: 0 0 10px #ff66aa; }
+    button { 
+        padding: 16px 32px; 
+        margin: 8px; 
+        font-size: 17px; 
+        background: #ff3366; 
+        color: white; 
+        border: none; 
+        border-radius: 50px; 
+        cursor: pointer; 
+        transition: all 0.3s;
+    }
+    button:hover { transform: scale(1.08); background: #ff6699; }
     .small-btn { padding: 10px 20px; font-size: 15px; }
-    #challenge { margin: 25px auto; padding: 25px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 680px; min-height: 220px; }
-    .score { font-size: 22px; margin: 15px 0; }
-    .clothes { background: rgba(255,100,150,0.2); padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 500px; }
-    .timer { font-size: 32px; font-weight: bold; color: #ffcc33; margin: 15px 0; }
+    
+    #challenge { 
+        margin: 30px auto; 
+        padding: 30px; 
+        background: rgba(255,255,255,0.1); 
+        border-radius: 20px; 
+        max-width: 700px; 
+        min-height: 160px; 
+        line-height: 1.6;
+    }
+    .clothes { 
+        background: rgba(255,100,150,0.25); 
+        padding: 18px; 
+        border-radius: 15px; 
+        margin: 20px auto; 
+        max-width: 500px; 
+    }
 </style>
 </head>
 <body>
     <h1>🔥 Eternal Flames 🔥</h1>
-    <p style="font-size:18px;">Our Private Spicy Game</p>
+    <p style="font-size:19px;">Our Private Spicy Game ❤️</p>
 
     <div class="clothes">
-        <strong>Clothing Left</strong><br><br>
-        You: <span id="clothesYou">5</span> &nbsp;&nbsp;&nbsp;
+        <strong>👕 Clothes Left</strong><br><br>
+        You: <span id="clothesYou">5</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Partner: <span id="clothesPartner">5</span><br><br>
-        <button class="small-btn" onclick="removeClothes('You')">You Removed</button>
-        <button class="small-btn" onclick="removeClothes('Partner')">Partner Removed</button>
+        <button class="small-btn" onclick="removeClothes('You')">You Removed One</button>
+        <button class="small-btn" onclick="removeClothes('Partner')">Partner Removed One</button>
     </div>
-
-    <div class="score">You: <span id="scoreYou">0</span> — Partner: <span id="scorePartner">0</span></div>
 
     <button onclick="randomChallenge('tease')">🌸 Tease Challenge</button>
     <button onclick="randomChallenge('hot')">🔥 Hot Challenge</button>
     <button onclick="randomChallenge('wild')">🌶️ Wild Challenge</button>
+    <button onclick="wildcard()">🎰 Lucky Wildcard</button>
     <button onclick="newDilemma()">❓ Spicy Dilemma</button>
-    <button onclick="sensoryRound()">🖤 Sensory Round</button>
+    <button onclick="sensoryRound()">🖤 Sensory Blindfold</button>
 
-    <div id="challenge">Click any button to start 🔥</div>
+    <div id="challenge">Click any button and have fun 😈</div>
 
 <script>
-// Scores & Clothes
-let scoreYou = 0, scorePartner = 0;
-let clothesYou = 5, clothesPartner = 5;
+// Clothing Counter
+let clothesYou = 5;
+let clothesPartner = 5;
 
-function updateUI() {
-    document.getElementById('scoreYou').textContent = scoreYou;
-    document.getElementById('scorePartner').textContent = scorePartner;
+function updateClothes() {
     document.getElementById('clothesYou').textContent = clothesYou;
     document.getElementById('clothesPartner').textContent = clothesPartner;
 }
 
-// ============== CHALLENGES ==============
 const challenges = {
     tease: [
-        "Kiss and lick their neck + ears for 45 seconds",
-        "Give a slow sensual massage for 2 minutes",
-        "Whisper 3 naughty things you want to do",
-        "Strip one item very seductively",
-        "French kiss for one full minute",
-        "Tease their inner thighs with fingers and breath",
-        "Suck on their fingers while eye contact",
-        "Lap dance or sensual grinding for 60 seconds",
+        "Kiss and lick their neck and ears slowly",
+        "Give a sensual full body massage",
+        "Strip one clothing item very seductively",
+        "Whisper 3 naughty things you want to do to them",
+        "French kiss passionately for one minute",
+        "Tease their inner thighs with your hands and mouth",
+        "Lap dance or sensual grinding",
         "Kiss every inch of their face and neck"
     ],
     hot: [
-        "Use ice cube on their body while kissing",
-        "Give oral for 2 minutes",
-        "69 position for 2 minutes",
-        "Cowgirl or reverse cowgirl for 2 minutes",
-        "Doggy style with teasing strokes",
-        "Light spanking + hair pulling",
-        "Pin their hands and tease them",
-        "Masturbate in front of each other",
-        "Nipple play with tongue and fingers"
+        "Use ice on their body while kissing them",
+        "Give oral pleasure for as long as you want",
+        "Do 69 together",
+        "Ride in Cowgirl position",
+        "Doggy style with light spanking",
+        "Pin their hands above head and tease",
+        "Nipple play with tongue and fingers",
+        "Mutual masturbation while watching each other"
     ],
     wild: [
-        "Blindfold yourself and let them use you",
-        "Sit on their face for as long as you can",
-        "Full striptease then fuck in chosen position",
+        "Blindfold them and tease however you like",
+        "Sit on their face",
+        "Full striptease then fuck in any position",
         "Beg on your knees for what you want",
-        "Try a new rougher position",
-        "Mutual touching + edging for 4 minutes",
-        "Let them control your orgasm completely",
-        "Wear only heels/lingerie for next 3 rounds",
-        "Record a short naughty video together (private)"
+        "Try a rough/new position",
+        "Let them completely control you",
+        "Edging (bring close then stop)",
+        "Wear nothing for the rest of the game"
     ]
 };
 
@@ -91,71 +114,55 @@ function randomChallenge(level) {
     const list = challenges[level];
     const challenge = list[Math.floor(Math.random() * list.length)];
     
-    let levelText = level === 'tease' ? '🌸 Tease' : level === 'hot' ? '🔥 Hot' : '🌶️ Wild';
+    let title = level === 'tease' ? '🌸 Tease Challenge' : 
+                level === 'hot' ? '🔥 Hot Challenge' : '🌶️ Wild Challenge';
     
     document.getElementById('challenge').innerHTML = `
-        <h2>${levelText} Challenge</h2>
+        <h2>${title}</h2>
         <p><strong>${challenge}</strong></p>
-        <p class="timer" id="timer">Ready</p>
-        <button class="small-btn" onclick="startTimer(60)">1 Min</button>
-        <button class="small-btn" onclick="startTimer(120)">2 Min</button>
-        <button class="small-btn" onclick="startTimer(180)">3 Min</button>
-        <button class="small-btn" onclick="startTimer(300)">5 Min</button>
     `;
 }
 
-let timerInterval;
-function startTimer(seconds) {
-    let timeLeft = seconds;
-    clearInterval(timerInterval);
+function wildcard() {
+    const wildcards = [
+        "Both of you remove 2 clothing items right now 👀",
+        "5 minutes of complete obedience to the other person",
+        "Choose any unlocked fantasy roleplay (Maid, Doctor, Stranger...)",
+        "Give each other a full body massage with oil",
+        "Try your favorite position for 10 minutes",
+        "Naughty voice note or video for each other (private)"
+    ];
+    const item = wildcards[Math.floor(Math.random() * wildcards.length)];
     
-    const timerEl = document.getElementById('timer');
-    if (!timerEl) return;   // Safety fix
-    
-    timerInterval = setInterval(() => {
-        const min = Math.floor(timeLeft / 60);
-        const sec = timeLeft % 60;
-        timerEl.textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
-        
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            timerEl.textContent = "⏰ Time's Up! 🔥";
-            timerEl.style.color = "#ff3366";
-        }
-        timeLeft--;
-    }, 1000);
+    document.getElementById('challenge').innerHTML = `
+        <h2>🎰 Lucky Wildcard! 🎉</h2>
+        <p><strong>${item}</strong></p>
+    `;
 }
 
-// ============== DILEMMA ==============
 function newDilemma() {
     const dilemmas = [
-        "Give oral for 8 minutes OR Receive for 5 minutes?",
-        "Be tied up OR Tie your partner up?",
-        "Blindfolded sex OR Sex in front of mirror?",
+        "Give oral or Receive oral?",
+        "Tie up or Get tied up?",
+        "Blindfolded or Mirror sex?",
+        "Dominate or Submit this round?",
         "Spank or Get spanked?",
-        "Dominate your partner OR Submit completely?",
-        "Use ice OR Use your mouth only?",
-        "Try a new position OR Repeat your favorite one?"
+        "Try new position or repeat favorite?"
     ];
-    
     const q = dilemmas[Math.floor(Math.random() * dilemmas.length)];
     
     document.getElementById('challenge').innerHTML = `
         <h2>❓ Spicy Dilemma</h2>
         <p><strong>${q}</strong></p>
-        <p>Discuss and choose together, then enjoy 🔥</p>
+        <p>Discuss and do what you both like ❤️‍🔥</p>
     `;
 }
 
-// ============== SENSORY ROUND ==============
 function sensoryRound() {
     document.getElementById('challenge').innerHTML = `
-        <h2>🖤 Sensory Round</h2>
-        <p><strong>Blindfold your partner for 3–5 minutes.</strong></p>
-        <p>Use fingers, tongue, ice, breath, or soft fabric to tease them slowly.</p>
-        <p class="timer" id="timer">Ready</p>
-        <button class="small-btn" onclick="startTimer(180)">Start 3 Min Timer</button>
-        <button class="small-btn" onclick="startTimer(300)">Start 5 Min Timer</button>
+        <h2>🖤 Sensory Blindfold Round</h2>
+        <p><strong>Blindfold your partner and tease them slowly with hands, tongue, breath, ice, etc.</strong></p>
+        <p>Make them moan and beg for more 😈</p>
     `;
 }
 
@@ -165,15 +172,15 @@ function removeClothes(person) {
     } else {
         clothesPartner = Math.max(0, clothesPartner - 1);
     }
-    updateUI();
+    updateClothes();
     
     if (clothesYou === 0 && clothesPartner === 0) {
-        alert("🎉 Both completely naked! Time for Wild Challenges 🔥");
+        alert("🎉 Both Fully Naked! Time for Wild Challenges 🔥");
     }
 }
 
 // Initialize
-updateUI();
+updateClothes();
 </script>
 </body>
 </html>
