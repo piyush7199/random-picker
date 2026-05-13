@@ -2,147 +2,103 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Eternal Flames - Spicy Couple Game</title>
+<title>Eternal Flames - Our Spicy Game</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a0033, #330033); color: white; text-align: center; margin: 0; padding: 20px; }
-    h1 { color: #ff3366; }
-    .board { display: flex; justify-content: center; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
-    .space { width: 55px; height: 55px; background: #330066; border: 2px solid #ff66aa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-    .active { background: #ff3366; transform: scale(1.1); box-shadow: 0 0 20px #ff66aa; }
-    button { padding: 14px 28px; margin: 8px; font-size: 17px; background: #ff3366; color: white; border: none; border-radius: 50px; cursor: pointer; }
+    body { 
+        font-family: 'Segoe UI', sans-serif; 
+        background: linear-gradient(135deg, #1a0033, #330033); 
+        color: white; 
+        text-align: center; 
+        margin: 0; 
+        padding: 20px; 
+    }
+    h1 { color: #ff3366; margin-bottom: 10px; }
+    button { 
+        padding: 16px 32px; 
+        margin: 12px; 
+        font-size: 18px; 
+        background: #ff3366; 
+        color: white; 
+        border: none; 
+        border-radius: 50px; 
+        cursor: pointer; 
+    }
     button:hover { background: #ff6699; }
-    .small-btn { padding: 10px 18px; font-size: 15px; }
-    #challenge { margin: 25px auto; padding: 25px; background: rgba(255,255,255,0.1); border-radius: 20px; max-width: 620px; min-height: 160px; }
-    #unlocked { margin-top: 30px; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto; }
-    .unlock-item { background: rgba(255,51,102,0.2); padding: 12px; margin: 8px; border-radius: 12px; border-left: 4px solid #ff3366; }
-    .score { font-size: 20px; margin: 10px; }
+    .small-btn { padding: 12px 24px; font-size: 16px; }
+    #challenge { 
+        margin: 30px auto; 
+        padding: 30px; 
+        background: rgba(255,255,255,0.1); 
+        border-radius: 20px; 
+        max-width: 650px; 
+        min-height: 180px; 
+        line-height: 1.6;
+    }
+    .score { font-size: 22px; margin: 15px 0; }
 </style>
 </head>
 <body>
     <h1>🔥 Eternal Flames 🔥</h1>
-    <p>Progress: <span id="progress">0</span>/25 | Level: <span id="level">Tease</span></p>
+    <p style="font-size:18px; margin:20px;">Our Private Spicy Game</p>
     
     <div class="score">You: <span id="scoreYou">0</span> — Partner: <span id="scorePartner">0</span></div>
 
-    <div class="board" id="board"></div>
-
     <button onclick="rollDice()">🎲 Roll Dice</button>
     <button onclick="newDilemma()">❓ Spicy Dilemma</button>
-    <button onclick="versusRound()">⚔️ Versus Round (Decide Winner)</button>
     <button onclick="sensoryRound()">🖤 Sensory Round</button>
-    <button onclick="unlockNextLevel()" style="background:#00cc66;">🔓 Unlock Next Level</button>
 
-    <div id="challenge">Click any button to begin your hot adventure...</div>
-
-    <button onclick="changeTheme()" class="small-btn">Change Theme</button>
-
-    <h2 style="margin-top:40px;">🗝️ Unlocked Scenes & Positions</h2>
-    <div id="unlocked"></div>
+    <div id="challenge">Click any button to start playing...</div>
 
 <script>
-// Game Variables
-let progress = 0;
-const maxProgress = 25;
+// Scores
 let scoreYou = 0;
 let scorePartner = 0;
 
-const themes = ["Fantasy Maid/Boss", "Doctor/Patient", "Sci-Fi Alien", "Strangers at Bar", "Teacher/Student"];
-let currentTheme = themes[0];
-
-let unlockedItems = [];
-
-const levels = [
-    {name: "Tease", min: 0},
-    {name: "Arousal", min: 6},
-    {name: "Passion", min: 12},
-    {name: "Ecstasy", min: 18},
-    {name: "Pure Lust", min: 23}
-];
-
-const unlockables = {
-    5:  {title: "Maid's Obedience", desc: "Seductive maid must obey 3 commands"},
-    8:  {title: "Doctor's Full Exam", desc: "Thorough body examination with hands & tongue"},
-    11: {title: "Slow Missionary", desc: "Deep eye contact missionary + dirty talk"},
-    14: {title: "Cowgirl Domination", desc: "Ride while controlling pace"},
-    17: {title: "Doggy Command", desc: "Spanking + light hair pulling allowed"},
-    20: {title: "Blindfold & Ice Play", desc: "4 minutes of ice and tongue teasing"},
-    23: {title: "69 Overload", desc: "Mutual oral until one begs"},
-    25: {title: "Full Fantasy Scene", desc: "Complete roleplay with any unlocked positions"}
-};
-
-function createBoard() {
-    const board = document.getElementById('board');
-    board.innerHTML = '';
-    for(let i = 0; i <= maxProgress; i++) {
-        const space = document.createElement('div');
-        space.className = 'space';
-        space.textContent = i;
-        if(i === progress) space.classList.add('active');
-        board.appendChild(space);
-    }
-}
-
-function getCurrentLevel() {
-    for(let i = levels.length-1; i >= 0; i--) {
-        if(progress >= levels[i].min) return levels[i].name;
-    }
-    return "Tease";
-}
-
-function updateUI() {
-    document.getElementById('progress').textContent = progress;
-    document.getElementById('level').textContent = getCurrentLevel();
+function updateScores() {
     document.getElementById('scoreYou').textContent = scoreYou;
     document.getElementById('scorePartner').textContent = scorePartner;
-    createBoard();
 }
 
 function rollDice() {
     const roll = Math.floor(Math.random() * 6) + 1;
-    progress = Math.min(progress + roll, maxProgress);
-    updateUI();
-    
-    const chal = getRandomChallenge();
-    document.getElementById('challenge').innerHTML = `<h2>🎲 Rolled ${roll}!</h2><p><strong>${chal}</strong></p>`;
-}
-
-function getRandomChallenge() {
-    const base = [
-        "Kiss and lick their neck slowly for 45 seconds",
-        "Strip one item very seductively",
-        "Give a sensual massage focusing on thighs/chest",
-        "Whisper exactly what you want them to do to you",
-        "Suck on their fingers while looking in their eyes"
+    const challenges = [
+        "Kiss and lick your partner's neck slowly for 45 seconds",
+        "Strip one clothing item very seductively while maintaining eye contact",
+        "Give a slow sensual massage on chest/thighs for 90 seconds",
+        "Whisper 3 naughty things you want to do to them right now",
+        "Suck on their fingers or toes while looking into their eyes",
+        "Let your partner spank you 8 times (playfully)",
+        "Perform a slow body tease (dance or touch yourself)",
+        "French kiss for one full minute"
     ];
-    return base[Math.floor(Math.random() * base.length)] + ` (${currentTheme})`;
+    
+    const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+    
+    document.getElementById('challenge').innerHTML = `
+        <h2>🎲 You rolled ${roll}!</h2>
+        <p><strong>${challenge}</strong></p>
+    `;
 }
 
 function newDilemma() {
     const dilemmas = [
-        "Would you rather give oral for 10 minutes or receive it for 5 minutes?",
-        "Would you rather tie me up or be tied up?",
-        "Would you rather do it with the lights on in front of a mirror or completely blindfolded?",
-        "Would you rather be spanked or do the spanking?"
+        "Would you rather give oral for 10 minutes or receive for 5 minutes?",
+        "Would you rather tie me up or be tied up this round?",
+        "Would you rather do it blindfolded or in front of a mirror?",
+        "Would you rather be spanked or do the spanking?",
+        "Would you rather use ice on body or hot wax (safe temperature)?",
+        "Would you rather dominate me completely or submit fully?"
     ];
+    
     const q = dilemmas[Math.floor(Math.random() * dilemmas.length)];
     
     document.getElementById('challenge').innerHTML = `
         <h2>❓ Spicy Dilemma</h2>
         <p><strong>${q}</strong></p>
-        <p>Decide the winner:</p>
+        <p>Who wins this round?</p>
         <button class="small-btn" onclick="declareWinner('You')">You Win</button>
         <button class="small-btn" onclick="declareWinner('Partner')">Partner Wins</button>
-    `;
-}
-
-function versusRound() {
-    document.getElementById('challenge').innerHTML = `
-        <h2>⚔️ Versus Round</h2>
-        <p>Play Rock Paper Scissors (best of 3) or any mini game you like.</p>
-        <p>Winner gets to choose a powerful reward!</p>
-        <button class="small-btn" onclick="declareWinner('You')">You Win This Round</button>
-        <button class="small-btn" onclick="declareWinner('Partner')">Partner Wins This Round</button>
     `;
 }
 
@@ -150,15 +106,15 @@ function declareWinner(winner) {
     if (winner === 'You') scoreYou++;
     else scorePartner++;
     
-    updateUI();
+    updateScores();
     
     const rewards = [
-        "Choose any unlocked position for next 5 minutes",
-        "Winner gets 3 minutes of oral of their choice",
-        "Loser must strip completely",
-        "Winner gets full body massage + teasing",
-        "Blindfold the loser and tease for 4 minutes",
-        "Winner decides the next full scene"
+        "Winner gets 4 minutes of oral pleasure of their choice",
+        "Loser must strip completely right now",
+        "Winner chooses any position for next 5-7 minutes",
+        "Blindfold the loser and tease them for 4 minutes",
+        "Winner gets a full body sensual massage",
+        "Loser must obey 3 commands from winner"
     ];
     
     const reward = rewards[Math.floor(Math.random() * rewards.length)];
@@ -166,62 +122,21 @@ function declareWinner(winner) {
     document.getElementById('challenge').innerHTML = `
         <h2>🏆 ${winner} Wins!</h2>
         <p><strong>${reward}</strong></p>
-        <p>Enjoy 🔥</p>
+        <p>Enjoy the moment 🔥</p>
     `;
 }
 
 function sensoryRound() {
     document.getElementById('challenge').innerHTML = `
         <h2>🖤 Sensory Round</h2>
-        <p>Blindfold your partner for 3–5 minutes.<br>
-        Tease them using fingers, tongue, ice, breath, etc.<br>
-        No rushing — make them beg.</p>
+        <p><strong>Blindfold your partner for 3 to 5 minutes.</strong></p>
+        <p>Use your fingers, tongue, breath, ice, or soft fabric to tease them slowly.<br>
+        Focus on neck, ears, nipples, inner thighs... make them crave more.</p>
     `;
 }
 
-function unlockNextLevel() {
-    progress = Math.min(progress + 4, maxProgress);
-    updateUI();
-    
-    let newUnlock = false;
-    Object.keys(unlockables).forEach(key => {
-        if(progress >= parseInt(key) && !unlockedItems.some(item => item.title === unlockables[key].title)) {
-            unlockedItems.push(unlockables[key]);
-            newUnlock = true;
-            
-            document.getElementById('challenge').innerHTML = `
-                <h2 style="color:#00ffaa">🔓 NEW SCENE UNLOCKED!</h2>
-                <h3>${unlockables[key].title}</h3>
-                <p>${unlockables[key].desc} (${currentTheme})</p>`;
-        }
-    });
-    
-    if(!newUnlock) {
-        document.getElementById('challenge').innerHTML = `<h2>Progress +4</h2><p>More spicy unlocks coming soon...</p>`;
-    }
-    renderUnlocked();
-}
-
-function renderUnlocked() {
-    const container = document.getElementById('unlocked');
-    container.innerHTML = '';
-    unlockedItems.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'unlock-item';
-        div.innerHTML = `<strong>${item.title}</strong><br>${item.desc}`;
-        container.appendChild(div);
-    });
-}
-
-function changeTheme() {
-    currentTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
-    alert("Theme changed to: " + currentTheme);
-}
-
 // Initialize
-createBoard();
-renderUnlocked();
-updateUI();
+updateScores();
 </script>
 </body>
 </html>
