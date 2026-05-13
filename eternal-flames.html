@@ -44,11 +44,11 @@
     
     <div class="score">You: <span id="scoreYou">0</span> — Partner: <span id="scorePartner">0</span></div>
 
-    <button onclick="rollDice()">🎲 Roll Dice</button>
+    <button onclick="randomChallenge()">🎲 Random Challenge</button>
     <button onclick="newDilemma()">❓ Spicy Dilemma</button>
     <button onclick="sensoryRound()">🖤 Sensory Round</button>
 
-    <div id="challenge">Click any button to start playing...</div>
+    <div id="challenge">Click any button to start the fun...</div>
 
 <script>
 // Scores
@@ -60,24 +60,58 @@ function updateScores() {
     document.getElementById('scorePartner').textContent = scorePartner;
 }
 
-function rollDice() {
-    const roll = Math.floor(Math.random() * 6) + 1;
-    const challenges = [
-        "Kiss and lick your partner's neck slowly for 45 seconds",
-        "Strip one clothing item very seductively while maintaining eye contact",
-        "Give a slow sensual massage on chest/thighs for 90 seconds",
-        "Whisper 3 naughty things you want to do to them right now",
-        "Suck on their fingers or toes while looking into their eyes",
-        "Let your partner spank you 8 times (playfully)",
-        "Perform a slow body tease (dance or touch yourself)",
-        "French kiss for one full minute"
-    ];
-    
-    const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+// Large list of challenges (40+)
+const challengesList = [
+    "Kiss and lick your partner's neck and ears for 45 seconds",
+    "Strip one clothing item very slowly and seductively",
+    "Give a sensual massage on chest, thighs, or back for 2 minutes",
+    "Whisper 3 dirty things you want to do to them right now",
+    "Suck on their fingers while maintaining strong eye contact",
+    "Let your partner spank you 10 times (playful to firm)",
+    "Perform a slow teasing dance or body touch for them",
+    "French kiss passionately for one full minute",
+    "Lick and kiss down their entire body (neck to thighs)",
+    "Use your tongue on their nipples for 60 seconds",
+    "Tease their inner thighs with your hands and mouth",
+    "Give oral pleasure for 90 seconds",
+    "Receive oral while giving dirty talk",
+    "69 position for 2 minutes",
+    "Ride them in Cowgirl position for 2 minutes",
+    "Take them in Doggy style with teasing strokes",
+    "Missionary with deep eye contact and moaning",
+    "Blindfold yourself and let them use you",
+    "Sit on their face for 60–90 seconds",
+    "Dry hump or grind on them seductively",
+    "Use ice cube on their body while kissing",
+    "Light hair pulling while kissing or fucking",
+    "Pin their hands above their head and tease them",
+    "Let them suck on your fingers/toes",
+    "Send them a very naughty voice note right now",
+    "Strip completely in the sexiest way possible",
+    "Masturbate in front of them for 1 minute",
+    "Watch them masturbate while you touch yourself",
+    "Try a new position you both haven't done recently",
+    "Kiss every inch of their body",
+    "Spank each other 8 times alternately",
+    "Neck biting + sucking (hickeys allowed if wanted)",
+    "Whisper fantasies in their ear while touching them",
+    "Use your breasts or ass to tease their body",
+    "Slow and sensual lap dance",
+    "Mutual touching without full penetration for 3 minutes",
+    "Beg for what you want while on your knees",
+    "Wear only one piece of clothing for the next 3 rounds",
+    "Do a sexy striptease for 60 seconds",
+    "Let them control your pleasure for 3 minutes"
+];
+
+function randomChallenge() {
+    const randomIndex = Math.floor(Math.random() * challengesList.length);
+    const challenge = challengesList[randomIndex];
     
     document.getElementById('challenge').innerHTML = `
-        <h2>🎲 You rolled ${roll}!</h2>
+        <h2>🎲 Random Challenge</h2>
         <p><strong>${challenge}</strong></p>
+        <p style="margin-top:20px; color:#ff99bb;">Have fun 🔥</p>
     `;
 }
 
@@ -87,8 +121,8 @@ function newDilemma() {
         "Would you rather tie me up or be tied up this round?",
         "Would you rather do it blindfolded or in front of a mirror?",
         "Would you rather be spanked or do the spanking?",
-        "Would you rather use ice on body or hot wax (safe temperature)?",
-        "Would you rather dominate me completely or submit fully?"
+        "Would you rather dominate me completely or submit fully?",
+        "Would you rather use toys or only body parts this round?"
     ];
     
     const q = dilemmas[Math.floor(Math.random() * dilemmas.length)];
@@ -109,12 +143,12 @@ function declareWinner(winner) {
     updateScores();
     
     const rewards = [
-        "Winner gets 4 minutes of oral pleasure of their choice",
+        "Winner gets 4 minutes of oral of their choice",
         "Loser must strip completely right now",
-        "Winner chooses any position for next 5-7 minutes",
+        "Winner chooses any position for next 5 minutes",
         "Blindfold the loser and tease them for 4 minutes",
-        "Winner gets a full body sensual massage",
-        "Loser must obey 3 commands from winner"
+        "Winner gets full body sensual massage",
+        "Loser must obey 3 commands from the winner"
     ];
     
     const reward = rewards[Math.floor(Math.random() * rewards.length)];
@@ -122,16 +156,16 @@ function declareWinner(winner) {
     document.getElementById('challenge').innerHTML = `
         <h2>🏆 ${winner} Wins!</h2>
         <p><strong>${reward}</strong></p>
-        <p>Enjoy the moment 🔥</p>
+        <p>Enjoy 🔥</p>
     `;
 }
 
 function sensoryRound() {
     document.getElementById('challenge').innerHTML = `
         <h2>🖤 Sensory Round</h2>
-        <p><strong>Blindfold your partner for 3 to 5 minutes.</strong></p>
-        <p>Use your fingers, tongue, breath, ice, or soft fabric to tease them slowly.<br>
-        Focus on neck, ears, nipples, inner thighs... make them crave more.</p>
+        <p><strong>Blindfold your partner for 3–5 minutes.</strong></p>
+        <p>Use fingers, tongue, breath, ice, or fabric to tease them slowly.<br>
+        Make them moan and beg for more.</p>
     `;
 }
 
